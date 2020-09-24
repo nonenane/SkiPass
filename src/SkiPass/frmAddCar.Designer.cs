@@ -89,8 +89,10 @@
             // tbFullName
             // 
             this.tbFullName.Location = new System.Drawing.Point(191, 43);
+            this.tbFullName.MaxLength = 1024;
             this.tbFullName.Multiline = true;
             this.tbFullName.Name = "tbFullName";
+            this.tbFullName.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.tbFullName.Size = new System.Drawing.Size(264, 41);
             this.tbFullName.TabIndex = 2;
             this.tbFullName.TextChanged += new System.EventHandler(this.tbFullName_TextChanged);
@@ -109,6 +111,7 @@
             this.tbShortName.Location = new System.Drawing.Point(191, 90);
             this.tbShortName.Multiline = true;
             this.tbShortName.Name = "tbShortName";
+            this.tbShortName.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.tbShortName.Size = new System.Drawing.Size(264, 41);
             this.tbShortName.TabIndex = 2;
             this.tbShortName.TextChanged += new System.EventHandler(this.tbFullName_TextChanged);
@@ -117,7 +120,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(471, 199);
+            this.ClientSize = new System.Drawing.Size(467, 195);
             this.ControlBox = false;
             this.Controls.Add(this.tbShortName);
             this.Controls.Add(this.lShortName);

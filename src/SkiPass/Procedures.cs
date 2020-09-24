@@ -51,11 +51,11 @@ namespace SkiPass
                 dtResult.Rows.Add(newRow);
 
                 dtResult.DefaultView.RowFilter = $"isOffice = {isOffice} or isOffice is null";
-                dtResult.DefaultView.Sort = "isMain desc, id_dep asc";
+                dtResult.DefaultView.Sort = "isMain desc, dep_name asc";
             }
             else {
                 dtResult.DefaultView.RowFilter = $"isOffice = {isOffice}";
-                dtResult.DefaultView.Sort = "id_dep asc";
+                dtResult.DefaultView.Sort = "dep_name asc";
             }
             
             dtResult = dtResult.DefaultView.ToTable().Copy();
@@ -162,6 +162,33 @@ namespace SkiPass
             DataTable dtResult = executeProcedure("[WorkTime].[setUserVsCar]",
                  new string[6] { "@id_kadr", "@fullName", "@shortName", "@id_user", "@result", "@isDel" },
                  new DbType[6] { DbType.Int32, DbType.String, DbType.String, DbType.Int32, DbType.Int32, DbType.Boolean }, ap);
+
+            return dtResult;
+        }
+
+
+        public async Task<DataTable> getListKadrVsCar(int id_workstatus, int id_personnelType)
+        {
+            ap.Clear();
+            ap.Add(id_workstatus);
+            ap.Add(id_personnelType);
+           
+            DataTable dtResult = executeProcedure("[WorkTime].[getListKadrVsCar]",
+                 new string[2] { "@id_workstatus", "@id_personnelType" },
+                 new DbType[2] { DbType.Int32, DbType.Int32}, ap);
+
+            return dtResult;
+        }
+
+        public async Task<DataTable> setPassCarUnload(int id_User_vs_Car)
+        {
+            ap.Clear();
+            ap.Add(id_User_vs_Car);
+            ap.Add(Nwuram.Framework.Settings.User.UserSettings.User.Id);
+
+            DataTable dtResult = executeProcedure("[WorkTime].[setPassCarUnload]",
+                 new string[2] { "@id_User_vs_Car", "@id_user" },
+                 new DbType[2] { DbType.Int32, DbType.Int32 }, ap);
 
             return dtResult;
         }

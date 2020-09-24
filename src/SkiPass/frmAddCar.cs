@@ -11,8 +11,7 @@ using System.Windows.Forms;
 namespace SkiPass
 {
     public partial class frmAddCar : Form
-    {
-        public DataRowView row { set; private get; }
+    {        
         public int id_kadr { set; private get; }
         public string nameKadr { set; private get; }
         public string nameShort { set; private get; }
@@ -27,7 +26,18 @@ namespace SkiPass
             ToolTip tp = new ToolTip();
             tp.SetToolTip(btClose, "Выход");
             tp.SetToolTip(btSave, "Сохранить");
-            
+
+            Task dtTask = get_settings();
+            dtTask.Wait();
+        }
+
+        private async Task get_settings()
+        {
+            object dtSettings = await Config.hCntMain.getSettings("lsnm");
+            if (dtSettings == null)
+                tbShortName.MaxLength = 40;
+            else
+                tbShortName.MaxLength = int.Parse(dtSettings.ToString());
         }
 
         private void frmAddCar_Load(object sender, EventArgs e)
