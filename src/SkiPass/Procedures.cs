@@ -180,6 +180,20 @@ namespace SkiPass
             return dtResult;
         }
 
+
+        public async Task<DataTable> getKadrVsCar(int id_kadr)
+        {
+            ap.Clear();
+            ap.Add(id_kadr);
+
+            DataTable dtResult = executeProcedure("[WorkTime].[getKadrVsCar]",
+                 new string[1] { "@id_kadr" },
+                 new DbType[1] { DbType.Int32 }, ap);
+
+            return dtResult;
+        }
+
+
         public async Task<DataTable> setPassCarUnload(int id_User_vs_Car)
         {
             ap.Clear();

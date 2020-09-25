@@ -83,6 +83,16 @@ namespace SkiPass.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap driver_s_license_computer_icons_driving {
+            get {
+                object obj = ResourceManager.GetObject("driver-s-license-computer-icons-driving", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Edit {
             get {
                 object obj = ResourceManager.GetObject("Edit", resourceCulture);
@@ -106,6 +116,16 @@ namespace SkiPass.Properties {
         internal static System.Drawing.Bitmap klpq_2511 {
             get {
                 object obj = ResourceManager.GetObject("klpq_2511", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap parking_car_park {
+            get {
+                object obj = ResourceManager.GetObject("parking-car-park", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

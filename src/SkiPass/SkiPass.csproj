@@ -31,12 +31,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EPPlus">
       <HintPath>..\..\EPPlus.dll</HintPath>
     </Reference>
-    <Reference Include="Framework">
-      <HintPath>..\..\Framework.dll</HintPath>
+    <Reference Include="Framework, Version=3.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\frameWork_mew\Framework\bin\Debug\Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.Microsoft.Office.Core">
+      <HintPath>..\..\..\..\..\DLL\библиотеки для ex\Interop.Microsoft.Office.Core.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="MyMessageBox">
       <HintPath>..\..\MyMessageBox.dll</HintPath>
@@ -125,6 +133,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\reload_8055.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\driver-s-license-computer-icons-driving.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\parking-car-park.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

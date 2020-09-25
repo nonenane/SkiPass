@@ -39,7 +39,10 @@ select
 	tt.datePrint as datePrintPass,
 	k.comment,
 	pd.Code,
-	u.id as id_User_vs_Car
+	u.id as id_User_vs_Car,
+	ltrim(rtrim(k.lastname)) as lastname,
+	ltrim(rtrim(k.firstname)) as firstname,
+	ltrim(rtrim(k.secondname)) as secondname
 from 
 	dbo.s_kadr  k
 		left join Personnel.s_PersonalData pd on pd.id_Kadr = k.id

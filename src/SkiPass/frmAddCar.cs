@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nwuram.Framework.Settings.Connection;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -23,6 +24,10 @@ namespace SkiPass
         public frmAddCar()
         {
             InitializeComponent();
+
+            if(Config.hCntMain==null)
+                Config.hCntMain = new Procedures(ConnectionSettings.GetServer(), ConnectionSettings.GetDatabase(), ConnectionSettings.GetUsername(), ConnectionSettings.GetPassword(), ConnectionSettings.ProgramName);
+
             ToolTip tp = new ToolTip();
             tp.SetToolTip(btClose, "Выход");
             tp.SetToolTip(btSave, "Сохранить");
@@ -42,6 +47,19 @@ namespace SkiPass
 
         private void frmAddCar_Load(object sender, EventArgs e)
         {
+            Task<DataTable> task = Config.hCntMain.getKadrVsCar(id_kadr);
+            task.Wait();
+            if (task.Result != null && task.Result.Rows.Count != 0)
+            {
+                DataRow row = task.Result.Rows[0];
+                nameKadr = (string)row["fio"];
+                nameFull = row["FullNameCar"] == DBNull.Value ? "" : (string)row["FullNameCar"];
+                nameShort = row["ShortNameCar"] == DBNull.Value ? "" : (string)row["ShortNameCar"];
+                this.Text = row["FullNameCar"] == DBNull.Value ? this.Text = "Добавить а/м" : "Редактировать а/м";
+            }
+            else
+            { this.Text = "Добавить а/м"; }
+
             tbFIO.Text = nameKadr;
             tbFullName.Text = nameFull;
             tbShortName.Text = nameShort;

@@ -1,9 +1,11 @@
 ﻿using Nwuram.Framework.Settings.User;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +16,7 @@ namespace SkiPass
     public partial class frmListCar : Form
     {
         private DataTable dtData;
+        private bool preChbPass = false;
         public frmListCar()
         {
             InitializeComponent();
@@ -149,12 +152,13 @@ namespace SkiPass
                 if (tbPostName.Text.Trim().Length != 0)
                     filter += (filter.Length == 0 ? "" : " and ") + string.Format("namePost like '%{0}%'", tbPostName.Text.Trim());
 
-                if (chbContainePass.Checked)
-                    filter += (filter.Length == 0 ? "" : " and ") + $"FullNameCar is null";
-                else
+                if (!chbContainePass.Checked)
+                    //filter += (filter.Length == 0 ? "" : " and ") + $"FullNameCar is null";
+                //else
                     filter += (filter.Length == 0 ? "" : " and ") + $"FullNameCar is not null";
 
                 dtData.DefaultView.RowFilter = filter;
+                dtData.DefaultView.Sort = "nameDep asc,fio asc";
 
             }
             catch
@@ -239,8 +243,33 @@ namespace SkiPass
             
             int id_User_vs_Car = (int)row["id_User_vs_Car"];
             string nameShort = (string)row["ShortNameCar"];
+            string fio = $"{(string)row["lastname"]} {(string)row["firstname"]} {(string)row["secondname"]}";
             string code = row["Code"].ToString();
 
+            string windowsPath = Environment.GetEnvironmentVariable("windir");
+            //задаем путь к файлу шрифта
+            string path = windowsPath[0].ToString() + ":/Windows/Fonts/ean13.ttf";
+            /*if (!File.Exists(path))
+            {
+                MessageBox.Show("Отсутствует установленный шрифт ean13.ttf", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return true;
+            }
+            */
+            path = Path.GetDirectoryName(Application.ExecutablePath) + "\\Templates\\pass.xls";
+            if (!File.Exists(path))
+            {
+                MessageBox.Show("Отсутствует шаблон выгрузки данных по пути\n" + path, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string pathOut = Path.GetDirectoryName(Application.ExecutablePath) + "\\passPrint.xls";
+
+            Nwuram.Framework.ToExcel.Report report = new Nwuram.Framework.ToExcel.Report();            
+            report.AddSingleValue("FIO", fio.Trim());
+            report.AddSingleValue("ShortName", nameShort);
+            report.AddSingleValue("code", ConvertToNewEan(code));
+            report.CreateTemplate(path.Replace(".xls",""), pathOut.Replace(".xls", ""), "");
+           // report.OpenFile(pathOut);
 
             Task<DataTable> task = Config.hCntMain.setPassCarUnload(id_User_vs_Car);
             task.Wait();
@@ -259,7 +288,148 @@ namespace SkiPass
                 return;
             }
 
+            report.OpenFile(pathOut.Replace(".xls", ""));
+
+
             getData();
+        }
+
+        private string ConvertToNewEan(string str)
+        {
+            string result = "";
+            char[] chaine = str.ToCharArray();
+
+            int first = 0;
+            bool fromA; // true начинает отсчет с буквы A, false начинает отсчет с буквы K 
+
+            for (int i = 1; 8 > i; i++)
+            {
+                fromA = false;
+
+                if (i == 1)
+                {
+                    //первая цифра добавляется как есть
+                    result += chaine[i - 1].ToString();
+                    first = int.Parse(chaine[i - 1].ToString());
+                }
+                else
+                {
+                    //со 2-й по 7-ю цифры преобразуются в заглавные буквы
+                    switch (i)
+                    {
+                        case 2:
+                            {
+                                //2-я цифра преобразуется всегда начиная с буквы А
+                                //остальные в зависимости от того, какая была 1-я цифра
+                                fromA = true;
+                                break;
+                            }
+                        case 3:
+                            {
+                                if ((first == 0)
+                                    || (first == 1)
+                                    || (first == 2)
+                                    || (first == 3))
+                                {
+                                    fromA = true;
+                                }
+                                break;
+                            }
+                        case 4:
+                            {
+                                if ((first == 0)
+                                    || (first == 4)
+                                    || (first == 7)
+                                    || (first == 8))
+                                {
+                                    fromA = true;
+                                }
+                                break;
+                            }
+                        case 5:
+                            {
+                                if ((first == 0)
+                                    || (first == 1)
+                                    || (first == 4)
+                                    || (first == 5)
+                                    || (first == 9))
+                                {
+                                    fromA = true;
+                                }
+                                break;
+                            }
+                        case 6:
+                            {
+                                if ((first == 0)
+                                    || (first == 2)
+                                    || (first == 5)
+                                    || (first == 6)
+                                    || (first == 7))
+                                {
+                                    fromA = true;
+                                }
+                                break;
+                            }
+                        case 7:
+                            {
+                                if ((first == 0)
+                                    || (first == 3)
+                                    || (first == 6)
+                                    || (first == 8)
+                                    || (first == 9))
+                                {
+                                    fromA = true;
+                                }
+                                break;
+                            }
+                    }
+
+                    result += ConvertNumberToLetter(chaine[i - 1].ToString(), fromA);
+                }
+            }
+
+            //срединный разделитель
+            result += "*";
+
+            //со 8-й по 13-ю цифры преобразуются в прописные буквы
+            for (int i = 8; 14 > i; i++)
+            {
+                result += ConvertNumberToSmallLetter(chaine[i - 1].ToString());
+            }
+
+            //результирующий разделитель
+            result += "+";
+
+            return result;
+        }
+
+        private string ConvertNumberToSmallLetter(string number)
+        {
+            byte[] a = new byte[1];
+
+            //получаем ASCII код буквы
+            a[0] = Convert.ToByte((int.Parse(number) + 97).ToString());
+
+            //преобразуем ASCII код в букву
+            return Encoding.Default.GetString(a);
+        }
+
+        private string ConvertNumberToLetter(string number, bool fromA)
+        {
+            byte[] a = new byte[1];
+
+            //получаем ASCII код буквы
+            if (fromA)
+            {
+                a[0] = Convert.ToByte((int.Parse(number) + 65).ToString());
+            }
+            else
+            {
+                a[0] = Convert.ToByte((int.Parse(number) + 75).ToString());
+            }
+
+            //преобразуем ASCII код в букву
+            return Encoding.Default.GetString(a);
         }
 
         private void btClose_Click(object sender, EventArgs e)
@@ -419,6 +589,35 @@ namespace SkiPass
         private void btUpdate_Click(object sender, EventArgs e)
         {
             getData();
+        }
+
+        private void rbOffice_Click(object sender, EventArgs e)
+        {
+            if (rbOffice.Checked && new List<string>(new string[] { "СК2" }).Contains(UserSettings.User.StatusCode))
+            {
+                preChbPass = chbContainePass.Checked;
+                chbContainePass.Visible = false;
+                chbContainePass.Checked = false;
+                btAdd.Visible = false;
+            }
+        }
+
+        private void rbUni_Click(object sender, EventArgs e)
+        {
+            if (rbUni.Checked && new List<string>(new string[] { "СК2" }).Contains(UserSettings.User.StatusCode))
+            {
+                chbContainePass.Checked = preChbPass;
+                chbContainePass.Visible = true;
+                btAdd.Visible = true;
+            }
+        }
+
+        private void frmListCar_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (DialogResult.No == MessageBox.Show("Вы хотите закрыть программу?", "Запрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2))
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

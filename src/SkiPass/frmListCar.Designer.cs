@@ -43,12 +43,6 @@
             this.tbPostName = new System.Windows.Forms.TextBox();
             this.tbKadrName = new System.Windows.Forms.TextBox();
             this.dgvData = new System.Windows.Forms.DataGridView();
-            this.chbContainePass = new System.Windows.Forms.CheckBox();
-            this.tbEditor = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.tbDateEdit = new System.Windows.Forms.TextBox();
-            this.btPrintPass = new System.Windows.Forms.Button();
             this.cV = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.cDeps = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cFIO = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -57,9 +51,15 @@
             this.cDateUnemploy = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cDatePrintPass = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cPhone = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chbContainePass = new System.Windows.Forms.CheckBox();
+            this.tbEditor = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tbDateEdit = new System.Windows.Forms.TextBox();
             this.btUpdate = new System.Windows.Forms.Button();
             this.btDel = new System.Windows.Forms.Button();
             this.btAdd = new System.Windows.Forms.Button();
+            this.btPrintPass = new System.Windows.Forms.Button();
             this.btPrint = new System.Windows.Forms.Button();
             this.btClose = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
@@ -125,6 +125,7 @@
             this.rbOffice.TabIndex = 0;
             this.rbOffice.Text = "Офис";
             this.rbOffice.UseVisualStyleBackColor = true;
+            this.rbOffice.Click += new System.EventHandler(this.rbOffice_Click);
             // 
             // rbUni
             // 
@@ -138,6 +139,7 @@
             this.rbUni.Text = "Универсам";
             this.rbUni.UseVisualStyleBackColor = true;
             this.rbUni.CheckedChanged += new System.EventHandler(this.rbUni_CheckedChanged);
+            this.rbUni.Click += new System.EventHandler(this.rbUni_Click);
             // 
             // groupBox2
             // 
@@ -225,7 +227,6 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvData.Location = new System.Drawing.Point(15, 88);
-            this.dgvData.MultiSelect = false;
             this.dgvData.Name = "dgvData";
             this.dgvData.RowHeadersVisible = false;
             this.dgvData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -235,66 +236,6 @@
             this.dgvData.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dgvData_RowPostPaint);
             this.dgvData.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgvData_RowPrePaint);
             this.dgvData.SelectionChanged += new System.EventHandler(this.dgvData_SelectionChanged);
-            // 
-            // chbContainePass
-            // 
-            this.chbContainePass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.chbContainePass.AutoSize = true;
-            this.chbContainePass.Location = new System.Drawing.Point(15, 572);
-            this.chbContainePass.Name = "chbContainePass";
-            this.chbContainePass.Size = new System.Drawing.Size(155, 17);
-            this.chbContainePass.TabIndex = 5;
-            this.chbContainePass.Text = "сотрудники без пропуска";
-            this.chbContainePass.UseVisualStyleBackColor = true;
-            this.chbContainePass.CheckedChanged += new System.EventHandler(this.chbContainePass_CheckedChanged);
-            // 
-            // tbEditor
-            // 
-            this.tbEditor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.tbEditor.Location = new System.Drawing.Point(359, 570);
-            this.tbEditor.Name = "tbEditor";
-            this.tbEditor.ReadOnly = true;
-            this.tbEditor.Size = new System.Drawing.Size(265, 20);
-            this.tbEditor.TabIndex = 3;
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(234, 574);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(79, 13);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Редактировал";
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(234, 600);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(119, 13);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Дата редактирования";
-            // 
-            // tbDateEdit
-            // 
-            this.tbDateEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.tbDateEdit.Location = new System.Drawing.Point(359, 596);
-            this.tbDateEdit.Name = "tbDateEdit";
-            this.tbDateEdit.ReadOnly = true;
-            this.tbDateEdit.Size = new System.Drawing.Size(265, 20);
-            this.tbDateEdit.TabIndex = 3;
-            // 
-            // btPrintPass
-            // 
-            this.btPrintPass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btPrintPass.Location = new System.Drawing.Point(819, 584);
-            this.btPrintPass.Name = "btPrintPass";
-            this.btPrintPass.Size = new System.Drawing.Size(32, 32);
-            this.btPrintPass.TabIndex = 6;
-            this.btPrintPass.UseVisualStyleBackColor = true;
-            this.btPrintPass.Click += new System.EventHandler(this.btPrintPass_Click);
             // 
             // cV
             // 
@@ -357,6 +298,56 @@
             this.cPhone.ReadOnly = true;
             this.cPhone.Visible = false;
             // 
+            // chbContainePass
+            // 
+            this.chbContainePass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chbContainePass.AutoSize = true;
+            this.chbContainePass.Location = new System.Drawing.Point(15, 572);
+            this.chbContainePass.Name = "chbContainePass";
+            this.chbContainePass.Size = new System.Drawing.Size(155, 17);
+            this.chbContainePass.TabIndex = 5;
+            this.chbContainePass.Text = "сотрудники без пропуска";
+            this.chbContainePass.UseVisualStyleBackColor = true;
+            this.chbContainePass.CheckedChanged += new System.EventHandler(this.chbContainePass_CheckedChanged);
+            // 
+            // tbEditor
+            // 
+            this.tbEditor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbEditor.Location = new System.Drawing.Point(359, 570);
+            this.tbEditor.Name = "tbEditor";
+            this.tbEditor.ReadOnly = true;
+            this.tbEditor.Size = new System.Drawing.Size(265, 20);
+            this.tbEditor.TabIndex = 3;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(234, 574);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(79, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Редактировал";
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(234, 600);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(119, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Дата редактирования";
+            // 
+            // tbDateEdit
+            // 
+            this.tbDateEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbDateEdit.Location = new System.Drawing.Point(359, 596);
+            this.tbDateEdit.Name = "tbDateEdit";
+            this.tbDateEdit.ReadOnly = true;
+            this.tbDateEdit.Size = new System.Drawing.Size(265, 20);
+            this.tbDateEdit.TabIndex = 3;
+            // 
             // btUpdate
             // 
             this.btUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -382,13 +373,24 @@
             // btAdd
             // 
             this.btAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btAdd.Image = global::SkiPass.Properties.Resources.Add;
+            this.btAdd.Image = global::SkiPass.Properties.Resources.parking_car_park;
             this.btAdd.Location = new System.Drawing.Point(857, 584);
             this.btAdd.Name = "btAdd";
             this.btAdd.Size = new System.Drawing.Size(32, 32);
             this.btAdd.TabIndex = 7;
             this.btAdd.UseVisualStyleBackColor = true;
             this.btAdd.Click += new System.EventHandler(this.btAdd_Click);
+            // 
+            // btPrintPass
+            // 
+            this.btPrintPass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btPrintPass.Image = global::SkiPass.Properties.Resources.driver_s_license_computer_icons_driving;
+            this.btPrintPass.Location = new System.Drawing.Point(819, 584);
+            this.btPrintPass.Name = "btPrintPass";
+            this.btPrintPass.Size = new System.Drawing.Size(32, 32);
+            this.btPrintPass.TabIndex = 6;
+            this.btPrintPass.UseVisualStyleBackColor = true;
+            this.btPrintPass.Click += new System.EventHandler(this.btPrintPass_Click);
             // 
             // btPrint
             // 
@@ -443,6 +445,7 @@
             this.Name = "frmListCar";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmList";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmListCar_FormClosing);
             this.Load += new System.EventHandler(this.frmListCar_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
