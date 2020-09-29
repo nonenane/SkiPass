@@ -1,5 +1,6 @@
 ﻿using Nwuram.Framework.Settings.User;
 using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,7 +25,7 @@ namespace SkiPass
             dgvData.AutoGenerateColumns = false;
 
             ToolTip tp = new ToolTip();
-            tp.SetToolTip(btClose,"Выход");
+            tp.SetToolTip(btClose, "Выход");
             tp.SetToolTip(btPrint, "Печать");
             tp.SetToolTip(btPrintPass, "Печать пропуска");
             tp.SetToolTip(btAdd, "Добавить/Редактировать");
@@ -154,7 +155,7 @@ namespace SkiPass
 
                 if (!chbContainePass.Checked)
                     //filter += (filter.Length == 0 ? "" : " and ") + $"FullNameCar is null";
-                //else
+                    //else
                     filter += (filter.Length == 0 ? "" : " and ") + $"FullNameCar is not null";
 
                 dtData.DefaultView.RowFilter = filter;
@@ -206,7 +207,7 @@ namespace SkiPass
 
         private void dgvData_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvData.CurrentRow == null || dgvData.CurrentRow.Index == -1 || dtData == null || dtData.DefaultView.Count == 0)
+            if (dgvData.CurrentRow == null || dgvData.CurrentRow.Index == -1 || dtData == null || dtData.DefaultView.Count == 0 || dtData.DefaultView.Count<dgvData.CurrentRow.Index)
             {
                 tbDateEdit.Text = tbEditor.Text = "";
                 //btPrintPass.Enabled = btPrint.Enabled = false;
@@ -238,14 +239,112 @@ namespace SkiPass
 
         private void btPrintPass_Click(object sender, EventArgs e)
         {
-            DataRowView row = dtData.DefaultView[dgvData.CurrentRow.Index];
-            if (row["FullNameCar"] == DBNull.Value) return;
-            
-            int id_User_vs_Car = (int)row["id_User_vs_Car"];
-            string nameShort = (string)row["ShortNameCar"];
-            string fio = $"{(string)row["lastname"]} {(string)row["firstname"]} {(string)row["secondname"]}";
-            string code = row["Code"].ToString();
 
+            EnumerableRowCollection<DataRow> rowCollect = dtData.AsEnumerable().Where(r => r.Field<bool>("isSelect"));
+            if (rowCollect.Count() > 0) 
+            {
+                Nwuram.Framework.ToExcelNew.ExcelUnLoad rep = new Nwuram.Framework.ToExcelNew.ExcelUnLoad();
+                rep.SetPageOrientationToLandscape();
+
+                int indexRow = 0;
+                int indexCol = 1;
+                int cnt = 0;
+                foreach (DataRow row in rowCollect)
+                {
+                    if (row["FullNameCar"] == DBNull.Value) continue;
+
+                    int id_User_vs_Car = (int)row["id_User_vs_Car"];
+                    string nameShort = (string)row["ShortNameCar"];
+                    string fio = $"{(string)row["lastname"]} {(string)row["firstname"]} {(string)row["secondname"]}";
+                    string code = row["Code"].ToString();
+
+                    if (code.Length == 0) continue;
+
+                    if (cnt % 2 != 0)
+                        indexCol += 6;
+                    else
+                    {
+                        indexRow += indexRow == 0 ? 1 : 11;
+                        indexCol = 1; 
+                    }
+
+
+
+                    printBlockPass(indexRow, indexCol, rep, nameShort, fio, code);
+                    cnt++;
+                }
+                rep.Show();
+                return;
+            }
+            else
+            if (dgvData.SelectedRows.Count > 1)
+            {
+
+                Nwuram.Framework.ToExcelNew.ExcelUnLoad rep = new Nwuram.Framework.ToExcelNew.ExcelUnLoad();
+                rep.SetPageOrientationToLandscape();
+
+                int indexRow = 0;
+                int indexCol = 1;
+                int cnt = 0;
+                foreach (DataGridViewRow rGrid in dgvData.SelectedRows)
+                {
+                    DataRowView row = dtData.DefaultView[rGrid.Index];
+
+                    if (row["FullNameCar"] == DBNull.Value) continue;
+
+                    int id_User_vs_Car = (int)row["id_User_vs_Car"];
+                    string nameShort = (string)row["ShortNameCar"];
+                    string fio = $"{(string)row["lastname"]} {(string)row["firstname"]} {(string)row["secondname"]}";
+                    string code = row["Code"].ToString();
+
+                    if (code.Length == 0) continue;
+
+                    if (cnt % 2 != 0)
+                        indexCol += 6;
+                    else
+                    {
+                        indexRow += indexRow == 0 ? 1 : 11;
+                        indexCol = 1;
+                    }
+
+
+
+                    printBlockPass(indexRow, indexCol, rep, nameShort, fio, code);
+                    cnt++;
+                }
+                rep.Show();
+
+                return;
+            }
+            else
+            {
+
+                DataRowView row = dtData.DefaultView[dgvData.CurrentRow.Index];
+                if (row["FullNameCar"] == DBNull.Value) return;
+
+                int id_User_vs_Car = (int)row["id_User_vs_Car"];
+                string nameShort = (string)row["ShortNameCar"];
+                string fio = $"{(string)row["lastname"]} {(string)row["firstname"]} {(string)row["secondname"]}";
+                string code = row["Code"].ToString();
+
+
+
+                Nwuram.Framework.ToExcelNew.ExcelUnLoad rep = new Nwuram.Framework.ToExcelNew.ExcelUnLoad();
+                rep.SetPageOrientationToLandscape();
+
+                int indexRow = 1;
+                int indexCol = 1;
+
+                printBlockPass(indexRow, indexCol, rep, nameShort, fio, code);             
+                rep.Show();
+                return;
+            }
+
+
+            //return;
+
+
+            /*
             string windowsPath = Environment.GetEnvironmentVariable("windir");
             //задаем путь к файлу шрифта
             string path = windowsPath[0].ToString() + ":/Windows/Fonts/ean13.ttf";
@@ -255,6 +354,8 @@ namespace SkiPass
                 return true;
             }
             */
+
+            /*
             path = Path.GetDirectoryName(Application.ExecutablePath) + "\\Templates\\pass.xls";
             if (!File.Exists(path))
             {
@@ -264,12 +365,12 @@ namespace SkiPass
 
             string pathOut = Path.GetDirectoryName(Application.ExecutablePath) + "\\passPrint.xls";
 
-            Nwuram.Framework.ToExcel.Report report = new Nwuram.Framework.ToExcel.Report();            
+            Nwuram.Framework.ToExcel.Report report = new Nwuram.Framework.ToExcel.Report();
             report.AddSingleValue("FIO", fio.Trim());
             report.AddSingleValue("ShortName", nameShort);
             report.AddSingleValue("code", ConvertToNewEan(code));
-            report.CreateTemplate(path.Replace(".xls",""), pathOut.Replace(".xls", ""), "");
-           // report.OpenFile(pathOut);
+            report.CreateTemplate(path.Replace(".xls", ""), pathOut.Replace(".xls", ""), "");
+            // report.OpenFile(pathOut);
 
             Task<DataTable> task = Config.hCntMain.setPassCarUnload(id_User_vs_Car);
             task.Wait();
@@ -289,9 +390,119 @@ namespace SkiPass
             }
 
             report.OpenFile(pathOut.Replace(".xls", ""));
-
+            */
 
             getData();
+        }
+
+        private void printBlockPass(int indexRow, int indexCol, Nwuram.Framework.ToExcelNew.ExcelUnLoad rep,string nameShort, string fio, string code)
+        {
+            //Размеры колонок
+            //rep.SetBorders(indexRow, indexCol, indexRow+8, indexCol+4);
+            rep.SetColumnWidth(indexRow, indexCol, indexRow, indexCol, 15);
+            rep.SetColumnWidth(indexRow, indexCol + 1, indexRow, indexCol, 8);
+
+            rep.SetColumnWidth(indexRow, indexCol + 2, indexRow, indexCol + 2, 10);
+            rep.SetColumnWidth(indexRow, indexCol + 3, indexRow, indexCol + 3, 5);
+
+            rep.SetColumnWidth(indexRow, indexCol + 4, indexRow, indexCol + 4, 12);
+            //Начало
+            rep.Merge(indexRow, indexCol, indexRow, indexCol + 1);
+            rep.SetFontName(indexRow, indexCol, indexRow, indexCol + 1, "Times New Roman");
+            rep.AddSingleValue("Пропуск", indexRow, indexCol);
+            rep.SetFontSize(indexRow, indexCol, indexRow, indexCol, 16);
+            rep.SetCellAlignmentToLeft(indexRow, indexCol, indexRow, indexCol);
+            rep.SetCellAlignmentToJustify(indexRow, indexCol, indexRow, indexCol);
+            rep.SetFontBold(indexRow, indexCol, indexRow, indexCol);
+
+            //+2 колонки
+            rep.Merge(indexRow, indexCol + 2, indexRow, indexCol + 3);
+            rep.SetFontName(indexRow, indexCol + 2, indexRow, indexCol + 3, "Times New Roman");
+            rep.AddSingleValue("часы работы", indexRow, indexCol + 2);
+            rep.SetFontSize(indexRow, indexCol + 2, indexRow, indexCol + 3, 12);
+            rep.SetCellAlignmentToLeft(indexRow, indexCol + 2, indexRow, indexCol + 3);
+            rep.SetCellAlignmentToJustify(indexRow, indexCol + 2, indexRow, indexCol + 3);
+            rep.SetFontBold(indexRow, indexCol + 2, indexRow, indexCol + 3);
+
+
+            //Колонка +4
+            rep.SetFontName(indexRow, indexCol + 4, indexRow, indexCol + 4, "Code EAN13");
+            rep.Merge(indexRow, indexCol + 4, indexRow + 8, indexCol + 4);
+            rep.SetOrientation(indexRow, indexCol + 4, indexRow, indexCol + 4, 90);
+            rep.SetFontSize(indexRow, indexCol + 4, indexRow, indexCol + 4, 41);
+            rep.AddSingleValue(ConvertToNewEan(code), indexRow, indexCol + 4);
+            rep.SetCellAlignmentToLeft(indexRow, indexCol + 4, indexRow, indexCol + 4);
+            rep.SetCellAlignmentToJustify(indexRow, indexCol + 4, indexRow, indexCol + 4);
+
+
+            //Вторая строка
+            indexRow++;
+            rep.Merge(indexRow, indexCol, indexRow, indexCol + 1);
+            rep.SetFontName(indexRow, indexCol, indexRow, indexCol + 1, "Times New Roman");
+            rep.AddSingleValue("на служебную парковку", indexRow, indexCol);
+            rep.SetFontSize(indexRow, indexCol, indexRow, indexCol, 12);
+            rep.SetCellAlignmentToLeft(indexRow, indexCol, indexRow, indexCol);
+            rep.SetCellAlignmentToJustify(indexRow, indexCol, indexRow, indexCol);
+            //rep.SetFontBold(indexRow, indexCol, indexRow, indexCol);
+
+            //+2 колонки
+            rep.Merge(indexRow, indexCol + 2, indexRow, indexCol + 3);
+            rep.SetFontName(indexRow, indexCol + 2, indexRow, indexCol + 3, "Times New Roman");
+            rep.AddSingleValue("с 7:30 до 2:30", indexRow, indexCol + 2);
+            rep.SetFontSize(indexRow, indexCol + 2, indexRow, indexCol + 3, 12);
+            rep.SetCellAlignmentToLeft(indexRow, indexCol + 2, indexRow, indexCol + 3);
+            rep.SetCellAlignmentToJustify(indexRow, indexCol + 2, indexRow, indexCol + 3);
+            rep.SetFontBold(indexRow, indexCol + 2, indexRow, indexCol + 3);
+
+            //3 и 4 строка
+            indexRow++;
+            indexRow++;
+            rep.Merge(indexRow, indexCol, indexRow, indexCol + 3);
+            rep.SetFontName(indexRow, indexCol, indexRow, indexCol + 1, "Times New Roman");
+            rep.AddSingleValue(fio, indexRow, indexCol);
+            rep.SetFontSize(indexRow, indexCol, indexRow, indexCol, 14);
+            rep.SetCellAlignmentToCenter(indexRow, indexCol, indexRow, indexCol);
+            rep.SetCellAlignmentToJustify(indexRow, indexCol, indexRow, indexCol);
+            rep.SetFontBold(indexRow, indexCol, indexRow, indexCol);
+
+            //5 строка
+            indexRow++;
+            rep.Merge(indexRow, indexCol, indexRow, indexCol + 3);
+            rep.SetFontName(indexRow, indexCol, indexRow, indexCol + 1, "Times New Roman");
+            rep.AddSingleValue("(Фамилия И.О.)", indexRow, indexCol);
+            rep.SetFontSize(indexRow, indexCol, indexRow, indexCol, 9);
+            rep.SetCellAlignmentToCenter(indexRow, indexCol, indexRow, indexCol);
+            rep.SetCellAlignmentToTop(indexRow, indexCol, indexRow, indexCol);
+            //rep.SetFontBold(indexRow, indexCol, indexRow, indexCol);
+
+            //6 и 7 и 8 строка
+            indexRow++;
+            indexRow++;
+            //rep.Merge(indexRow, indexCol, indexRow, indexCol);
+            rep.SetFontName(indexRow, indexCol, indexRow, indexCol + 1, "Times New Roman");
+            rep.AddSingleValue("Гос. Номер а/м:", indexRow, indexCol);
+            rep.SetFontSize(indexRow, indexCol, indexRow, indexCol, 11);
+            rep.SetCellAlignmentToLeft(indexRow, indexCol, indexRow, indexCol);
+            rep.SetCellAlignmentToJustify(indexRow, indexCol, indexRow, indexCol);
+            //rep.SetFontBold(indexRow, indexCol, indexRow, indexCol);
+
+            rep.Merge(indexRow, indexCol + 1, indexRow + 1, indexCol + 3);
+            rep.SetFontName(indexRow, indexCol + 1, indexRow, indexCol + 3, "Times New Roman");
+            rep.AddSingleValue(nameShort, indexRow, indexCol + 1);
+            rep.SetFontSize(indexRow, indexCol + 1, indexRow, indexCol + 3, 14);
+            rep.SetCellAlignmentToCenter(indexRow, indexCol + 1, indexRow, indexCol + 3);
+            rep.SetCellAlignmentToJustify(indexRow, indexCol + 1, indexRow, indexCol + 3);
+            rep.SetFontBold(indexRow, indexCol + 1, indexRow, indexCol + 3);
+
+            //9 строка
+            indexRow++;
+            indexRow++;
+            rep.Merge(indexRow, indexCol, indexRow, indexCol + 3);
+            rep.SetFontName(indexRow, indexCol, indexRow, indexCol + 3, "Times New Roman");
+            rep.AddSingleValue("Подпись РДО ___________", indexRow, indexCol);
+            rep.SetFontSize(indexRow, indexCol, indexRow, indexCol, 11);
+            rep.SetCellAlignmentToLeft(indexRow, indexCol, indexRow, indexCol);
+            rep.SetCellAlignmentToJustify(indexRow, indexCol, indexRow, indexCol);
         }
 
         private string ConvertToNewEan(string str)

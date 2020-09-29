@@ -5,6 +5,8 @@ using Nwuram.Framework.Logging;
 using Nwuram.Framework.Settings.Connection;
 using System.Data;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Nwuram.Framework.Settings.User;
 
 namespace SkiPass
 {
@@ -32,8 +34,10 @@ namespace SkiPass
                     Logging.Comment("Вход в программу");
                     Logging.StopFirstLevel();
 
-                    //Application.Run(new frmAddCar() {nameKadr = "Казявкин",id_kadr = 176695, Text = "Добавить/редактировать а/м" });
-                    Application.Run(new frmListCar());
+                    if (new List<string>(new string[] { "ОЭЭС" }).Contains(UserSettings.User.StatusCode))
+                        Application.Run(new frmUnLoadDataForTxt());
+                    else
+                        Application.Run(new frmListCar());
 
                     Logging.StartFirstLevel(2);
                     Logging.Comment("Выход из программы");

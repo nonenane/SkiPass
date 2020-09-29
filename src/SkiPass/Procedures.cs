@@ -207,5 +207,17 @@ namespace SkiPass
             return dtResult;
         }
 
+
+        public async Task<DataTable> getListKadrVsCarForOEES()
+        {
+            ap.Clear();
+
+            DataTable dtResult = executeProcedure("[WorkTime].[getListKadrVsCarForOEES]",
+                 new string[0] { },
+                 new DbType[0] { }, ap);
+
+            return dtResult;
+        }
+
     }
 }
