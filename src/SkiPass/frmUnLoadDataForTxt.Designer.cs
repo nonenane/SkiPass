@@ -28,9 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btClose = new System.Windows.Forms.Button();
             this.btUnLoad = new System.Windows.Forms.Button();
+            this.btClose = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // btUnLoad
+            // 
+            this.btUnLoad.BackgroundImage = global::SkiPass.Properties.Resources.чума;
+            this.btUnLoad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btUnLoad.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btUnLoad.ForeColor = System.Drawing.Color.Red;
+            this.btUnLoad.Location = new System.Drawing.Point(12, 12);
+            this.btUnLoad.Name = "btUnLoad";
+            this.btUnLoad.Size = new System.Drawing.Size(284, 146);
+            this.btUnLoad.TabIndex = 8;
+            this.btUnLoad.Text = "Выгрузить";
+            this.btUnLoad.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btUnLoad.UseVisualStyleBackColor = true;
+            this.btUnLoad.Click += new System.EventHandler(this.btUnLoad_Click);
             // 
             // btClose
             // 
@@ -42,16 +57,6 @@
             this.btClose.TabIndex = 7;
             this.btClose.UseVisualStyleBackColor = true;
             this.btClose.Click += new System.EventHandler(this.btClose_Click);
-            // 
-            // btUnLoad
-            // 
-            this.btUnLoad.Location = new System.Drawing.Point(12, 12);
-            this.btUnLoad.Name = "btUnLoad";
-            this.btUnLoad.Size = new System.Drawing.Size(284, 146);
-            this.btUnLoad.TabIndex = 8;
-            this.btUnLoad.Text = "Выгрузить";
-            this.btUnLoad.UseVisualStyleBackColor = true;
-            this.btUnLoad.Click += new System.EventHandler(this.btUnLoad_Click);
             // 
             // frmUnLoadDataForTxt
             // 
