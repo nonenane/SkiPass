@@ -10,13 +10,13 @@ GO
 -- Create date: 2020-09-24
 -- Description:	ѕолучение списка сотрудников с пропусками
 -- =============================================
-CREATE PROCEDURE [WorkTime].[getListKadrVsCarForOEES]	
+ALTER PROCEDURE [WorkTime].[getListKadrVsCarForOEES]	
 AS
 BEGIN
 	SET NOCOUNT ON;
 	
 select 	
-	isnull(ltrim(rtrim(k.lastname))+' ','')+isnull(substring(ltrim(rtrim(k.firstname)),1,1)+'. ','')+isnull(substring(ltrim(rtrim(k.secondname)),1,1)+'. ','') as fio,
+	isnull(substring(isnull(ltrim(rtrim(k.lastname)),''),1,1)+'. ','')+isnull(substring(ltrim(rtrim(k.firstname)),1,1)+'. ','')+isnull(substring(ltrim(rtrim(k.secondname)),1,1)+'. ','') as fio,
 	u.FullNameCar,	
 	u.ShortNameCar,
 	pd.Code,
@@ -30,5 +30,7 @@ from
 	
 where 
 	k.id_WorkStatus  =  4 and pd.Code is not null
+order by 
+	pd.Code asc
 
 END

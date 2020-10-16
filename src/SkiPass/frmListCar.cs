@@ -1,4 +1,5 @@
-﻿using Nwuram.Framework.Settings.User;
+﻿using Nwuram.Framework.Settings.Connection;
+using Nwuram.Framework.Settings.User;
 using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using System;
@@ -22,6 +23,21 @@ namespace SkiPass
         {
             InitializeComponent();
             this.Text = "\"" + Nwuram.Framework.Settings.Connection.ConnectionSettings.ProgramName + "\", \"" + Nwuram.Framework.Settings.User.UserSettings.User.Status + "\", " + Nwuram.Framework.Settings.User.UserSettings.User.FullUsername + "";
+
+
+            tsLabel.Text = Nwuram.Framework.Settings.Connection.ConnectionSettings.GetServer() + " " +
+              Nwuram.Framework.Settings.Connection.ConnectionSettings.GetDatabase();
+
+            for (int i = 2; i <= 4; i++)
+            {
+                if (ConnectionSettings.GetServer($"{i}").Length > 0)
+                {
+                    tsLabel.Text += " | " + Nwuram.Framework.Settings.Connection.ConnectionSettings.GetServer($"{i}") + " " +
+                  Nwuram.Framework.Settings.Connection.ConnectionSettings.GetDatabase($"{i}");
+                }
+            }
+
+
             dgvData.AutoGenerateColumns = false;
 
             ToolTip tp = new ToolTip();
@@ -207,7 +223,7 @@ namespace SkiPass
 
         private void dgvData_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvData.CurrentRow == null || dgvData.CurrentRow.Index == -1 || dtData == null || dtData.DefaultView.Count == 0 || dtData.DefaultView.Count<dgvData.CurrentRow.Index)
+            if (dgvData.CurrentRow == null || dgvData.CurrentRow.Index == -1 || dtData == null || dtData.DefaultView.Count == 0 || dtData.DefaultView.Count<=dgvData.CurrentRow.Index)
             {
                 tbDateEdit.Text = tbEditor.Text = "";
                 //btPrintPass.Enabled = btPrint.Enabled = false;
@@ -397,6 +413,7 @@ namespace SkiPass
 
         private void printBlockPass(int indexRow, int indexCol, Nwuram.Framework.ToExcelNew.ExcelUnLoad rep,string nameShort, string fio, string code)
         {
+            int rowStart = indexRow;
             //Размеры колонок
             //rep.SetBorders(indexRow, indexCol, indexRow+8, indexCol+4);
             rep.SetColumnWidth(indexRow, indexCol, indexRow, indexCol, 15);
@@ -460,7 +477,7 @@ namespace SkiPass
             rep.Merge(indexRow, indexCol, indexRow, indexCol + 3);
             rep.SetFontName(indexRow, indexCol, indexRow, indexCol + 1, "Times New Roman");
             rep.AddSingleValue(fio, indexRow, indexCol);
-            rep.SetFontSize(indexRow, indexCol, indexRow, indexCol, 14);
+            rep.SetFontSize(indexRow, indexCol, indexRow, indexCol, 12);
             rep.SetCellAlignmentToCenter(indexRow, indexCol, indexRow, indexCol);
             rep.SetCellAlignmentToJustify(indexRow, indexCol, indexRow, indexCol);
             rep.SetFontBold(indexRow, indexCol, indexRow, indexCol);
@@ -487,12 +504,14 @@ namespace SkiPass
             //rep.SetFontBold(indexRow, indexCol, indexRow, indexCol);
 
             rep.Merge(indexRow, indexCol + 1, indexRow + 1, indexCol + 3);
+            rep.SetWrapText(indexRow, indexCol + 1, indexRow + 1, indexCol + 3);
             rep.SetFontName(indexRow, indexCol + 1, indexRow, indexCol + 3, "Times New Roman");
             rep.AddSingleValue(nameShort, indexRow, indexCol + 1);
-            rep.SetFontSize(indexRow, indexCol + 1, indexRow, indexCol + 3, 14);
+            rep.SetFontSize(indexRow, indexCol + 1, indexRow, indexCol + 3, 12);
             rep.SetCellAlignmentToCenter(indexRow, indexCol + 1, indexRow, indexCol + 3);
             rep.SetCellAlignmentToJustify(indexRow, indexCol + 1, indexRow, indexCol + 3);
             rep.SetFontBold(indexRow, indexCol + 1, indexRow, indexCol + 3);
+            
 
             //9 строка
             indexRow++;
@@ -503,7 +522,19 @@ namespace SkiPass
             rep.SetFontSize(indexRow, indexCol, indexRow, indexCol, 11);
             rep.SetCellAlignmentToLeft(indexRow, indexCol, indexRow, indexCol);
             rep.SetCellAlignmentToJustify(indexRow, indexCol, indexRow, indexCol);
+
+            rep.SetBordersToAll(rowStart, indexCol, rowStart, indexCol + 4, OfficeOpenXml.Style.ExcelBorderStyle.Medium, 1);
+            rep.SetBordersToAll(indexRow, indexCol, indexRow, indexCol+4, OfficeOpenXml.Style.ExcelBorderStyle.Medium,2);
+
+
+            rep.SetBordersToAll(rowStart, indexCol, indexRow, indexCol, OfficeOpenXml.Style.ExcelBorderStyle.Medium, 3);
+            
+            rep.SetBordersToAll(rowStart, indexCol+4, indexRow, indexCol+4, OfficeOpenXml.Style.ExcelBorderStyle.Medium, 4);
+
+            rep.SetBordersToAll(rowStart, indexCol+3, indexRow, indexCol+3, OfficeOpenXml.Style.ExcelBorderStyle.Medium, 4);
+
         }
+
 
         private string ConvertToNewEan(string str)
         {

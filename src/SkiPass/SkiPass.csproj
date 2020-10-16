@@ -34,13 +34,16 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>parking-car-park.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EPPlus">
       <HintPath>..\..\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="Framework, Version=3.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\frameWork_mew\Framework\bin\Debug\Framework.dll</HintPath>
+      <HintPath>..\..\..\..\FrameWork\frameWork_mew\Framework\bin\Debug\Framework.dll</HintPath>
     </Reference>
     <Reference Include="Interop.Microsoft.Office.Core">
       <HintPath>..\..\..\..\..\DLL\библиотеки для ex\Interop.Microsoft.Office.Core.dll</HintPath>
@@ -151,6 +154,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\чума.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="parking-car-park.ico" />
+    <None Include="Resources\QkBB.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

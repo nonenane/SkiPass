@@ -30,6 +30,7 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmListCar));
             this.label1 = new System.Windows.Forms.Label();
             this.cmbDeps = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -62,9 +63,13 @@
             this.btPrintPass = new System.Windows.Forms.Button();
             this.btPrint = new System.Windows.Forms.Button();
             this.btClose = new System.Windows.Forms.Button();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tsLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -230,7 +235,7 @@
             this.dgvData.Name = "dgvData";
             this.dgvData.RowHeadersVisible = false;
             this.dgvData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvData.Size = new System.Drawing.Size(950, 476);
+            this.dgvData.Size = new System.Drawing.Size(950, 465);
             this.dgvData.TabIndex = 4;
             this.dgvData.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgvData_ColumnWidthChanged);
             this.dgvData.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dgvData_RowPostPaint);
@@ -302,7 +307,7 @@
             // 
             this.chbContainePass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chbContainePass.AutoSize = true;
-            this.chbContainePass.Location = new System.Drawing.Point(15, 572);
+            this.chbContainePass.Location = new System.Drawing.Point(15, 561);
             this.chbContainePass.Name = "chbContainePass";
             this.chbContainePass.Size = new System.Drawing.Size(155, 17);
             this.chbContainePass.TabIndex = 5;
@@ -313,7 +318,7 @@
             // tbEditor
             // 
             this.tbEditor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.tbEditor.Location = new System.Drawing.Point(359, 570);
+            this.tbEditor.Location = new System.Drawing.Point(359, 559);
             this.tbEditor.Name = "tbEditor";
             this.tbEditor.ReadOnly = true;
             this.tbEditor.Size = new System.Drawing.Size(265, 20);
@@ -323,7 +328,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(234, 574);
+            this.label3.Location = new System.Drawing.Point(234, 563);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(79, 13);
             this.label3.TabIndex = 0;
@@ -333,7 +338,7 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(234, 600);
+            this.label4.Location = new System.Drawing.Point(234, 589);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(119, 13);
             this.label4.TabIndex = 0;
@@ -342,7 +347,7 @@
             // tbDateEdit
             // 
             this.tbDateEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.tbDateEdit.Location = new System.Drawing.Point(359, 596);
+            this.tbDateEdit.Location = new System.Drawing.Point(359, 585);
             this.tbDateEdit.Name = "tbDateEdit";
             this.tbDateEdit.ReadOnly = true;
             this.tbDateEdit.Size = new System.Drawing.Size(265, 20);
@@ -363,7 +368,7 @@
             // 
             this.btDel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btDel.Image = global::SkiPass.Properties.Resources.Trash;
-            this.btDel.Location = new System.Drawing.Point(895, 584);
+            this.btDel.Location = new System.Drawing.Point(895, 573);
             this.btDel.Name = "btDel";
             this.btDel.Size = new System.Drawing.Size(32, 32);
             this.btDel.TabIndex = 7;
@@ -374,7 +379,7 @@
             // 
             this.btAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btAdd.Image = global::SkiPass.Properties.Resources.parking_car_park;
-            this.btAdd.Location = new System.Drawing.Point(857, 584);
+            this.btAdd.Location = new System.Drawing.Point(857, 573);
             this.btAdd.Name = "btAdd";
             this.btAdd.Size = new System.Drawing.Size(32, 32);
             this.btAdd.TabIndex = 7;
@@ -385,7 +390,7 @@
             // 
             this.btPrintPass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btPrintPass.Image = global::SkiPass.Properties.Resources.driver_s_license_computer_icons_driving;
-            this.btPrintPass.Location = new System.Drawing.Point(819, 584);
+            this.btPrintPass.Location = new System.Drawing.Point(819, 573);
             this.btPrintPass.Name = "btPrintPass";
             this.btPrintPass.Size = new System.Drawing.Size(32, 32);
             this.btPrintPass.TabIndex = 6;
@@ -396,7 +401,7 @@
             // 
             this.btPrint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btPrint.Image = global::SkiPass.Properties.Resources.klpq_2511;
-            this.btPrint.Location = new System.Drawing.Point(895, 584);
+            this.btPrint.Location = new System.Drawing.Point(895, 573);
             this.btPrint.Name = "btPrint";
             this.btPrint.Size = new System.Drawing.Size(32, 32);
             this.btPrint.TabIndex = 6;
@@ -407,18 +412,46 @@
             // 
             this.btClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btClose.Image = global::SkiPass.Properties.Resources.Exit;
-            this.btClose.Location = new System.Drawing.Point(933, 584);
+            this.btClose.Location = new System.Drawing.Point(933, 573);
             this.btClose.Name = "btClose";
             this.btClose.Size = new System.Drawing.Size(32, 32);
             this.btClose.TabIndex = 6;
             this.btClose.UseVisualStyleBackColor = true;
             this.btClose.Click += new System.EventHandler(this.btClose_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsLabel,
+            this.toolStripProgressBar1});
+            this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.statusStrip1.Location = new System.Drawing.Point(0, 608);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(977, 22);
+            this.statusStrip1.SizingGrip = false;
+            this.statusStrip1.TabIndex = 20;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // tsLabel
+            // 
+            this.tsLabel.Name = "tsLabel";
+            this.tsLabel.Size = new System.Drawing.Size(109, 17);
+            this.tsLabel.Text = "toolStripStatusLabel1";
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(200, 16);
+            this.toolStripProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.toolStripProgressBar1.Visible = false;
+            // 
             // frmListCar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(977, 630);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btUpdate);
             this.Controls.Add(this.btDel);
             this.Controls.Add(this.btAdd);
@@ -440,8 +473,7 @@
             this.Controls.Add(this.cmbDeps);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmListCar";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmList";
@@ -452,6 +484,8 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -491,5 +525,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn cDatePrintPass;
         private System.Windows.Forms.DataGridViewTextBoxColumn cPhone;
         private System.Windows.Forms.Button btUpdate;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel tsLabel;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
     }
 }
